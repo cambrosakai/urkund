@@ -1,0 +1,16 @@
+{
+    "Id": 5139333,
+    "ExternalId": "EID_2",
+    "Filename": "testdoc1.docx",
+    "MimeType": "application\/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "Timestamp": "2015-08-27T19:08:14",
+    "Status": {
+        "Message": "Dokumentet har skickats till URKUND.",
+        "State": "Submitted"
+    },
+    "Document": null,
+    "Report": null,
+    "Subject": "an_example_subject",
+    "Message": "an_example_message",
+    "Anonymous": false
+}

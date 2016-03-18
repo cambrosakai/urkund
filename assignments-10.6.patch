@@ -1,0 +1,320 @@
+Index: assignment-bundles/resources/assignment.properties
+===================================================================
+--- assignment-bundles/resources/assignment.properties	(revision 322820)
++++ assignment-bundles/resources/assignment.properties	(working copy)
+@@ -433,6 +433,7 @@
+ theisnostudent = There is no student.
+ 
+ thiasshas = This assignment has no instructions. Please make a correction or click the original button to proceed.
++wrongsubmtype="Single Uploaded File Only" should be used as Student Submission when Urkund Service is enabled
+ 
+ ungra = Ungraded
+ fail = Fail
+@@ -674,8 +675,8 @@
+ uploadall.folders.no=Save all selected download options in one folder (This CANNOT be loaded back into Assignments)
+ 
+ review.use = Use {0}
+-review.allow = Allow students to view report
+-review.report = Turnitin Report
++review.allow = Allow students to view the report
++review.report = Urkund Report
+ review.submit.papers.repository=Submit papers to the following repository:
+ review.submit.papers.repository.none=None
+ review.submit.papers.repository.standard=Standard Paper Repository
+@@ -683,7 +684,7 @@
+ review.originality.reports=Generate originality reports:
+ review.originality.reports.immediately=Immediately
+ review.originality.reports.due=On Due Date
+-review.originality.check=Check originality against:
++review.originality.check=
+ review.originality.check.turnitin=Turnitin paper repository
+ review.originality.check.internet=Current and archived internet
+ review.originality.check.pub=Periodicals, journals, and publications
+@@ -698,12 +699,12 @@
+ review.exclude.matches.header=Exclusion options:
+ 
+ gen.sorbyreview = Sort by review
+-gen.rev = TurnItIn
++gen.rev = Urkund
+ review.notavail = Not available yet
+ review.viewreport = View Report
+ review.title = {0} Service
+-review.noreport = no report
+-review.contentReviewIndicator=Originality of attachments will be verified by {0}.
++review.noreport = No report
++review.contentReviewIndicator=Originality of attachments will be verified by {0}.<br/>Only use file types: Word (doc, docx), Powerpoint (ppt, pptx), OpenDocument (odt, sxw), pdf, html, htm, rtf or txt.<br/>
+ 
+ ## notification email content
+ noti.subject.label=Subject:
+@@ -869,11 +870,12 @@
+ content_review.error.REPORT_ERROR_RETRY_CODE = An error occurred while retrieving the originality report for this attachment. The system will automatically try to re-retrieve the report.
+ content_review.error.REPORT_ERROR_NO_RETRY_CODE = An error occurred while retrieving the originality report for this attachment. The report cannot be retrieved.
+ content_review.error.SUBMISSION_ERROR_RETRY_EXCEEDED_CODE = All attempts to submit this attachment for originality review failed. Limit on submission attempts reached.
++content_review.error.REPORT_ERROR_ATTACHMENT_NOT_FOUND=An error occurred while submitting this attachment to the originality checking service. Check file type and file size. 
+ content_review.pending.info = This attachment has been submitted and is pending review.
+ 
+ content_review.error = An unknown error occurred. The originality review for this attachment is not available.
+-content_review.error.createAssignment=The assignment was saved, but Turnitin information was unable to be updated.  Please try saving again.
+-content_review.note=<div><br /><em>NOTE, If using Turnitin:</em><ol><li>Set this assignment to &quot;Single Uploaded File only.&quot;</li> <li>Tell students:</li><ol><li>Submit only one attachment.</li><li>Only use file types: Word, PDF, HTML, RTF, PowerPoint, or plain text.</li><li>Always include file extension.</li></ol></ol></div>
++content_review.error.createAssignment=The assignment was saved, but Urkund information was unable to be updated.  Please try saving again.
++content_review.note=<div><em>NOTE:</em><ol><li>Set this assignment to &quot;Single Uploaded File only.&quot;</li> <li>Tell students:</li><ol><li>Only use file types: Word (doc, docx), Powerpoint (ppt, pptx), OpenDocument (odt, sxw), pdf, html, htm, rtf or txt.</li><li>Always include file extension.</li></ol></ol></div>
+ 
+ noti.releaseresubmission.subject.content=Assignment submission has been corrected
+ noti.releaseresubmission.text=Your submission to assignment "{0}" has been corrected and it allows resubmissions until the due date. Please go to {1} to view details.
+Index: assignment-bundles/resources/assignment_sv.properties
+===================================================================
+--- assignment-bundles/resources/assignment_sv.properties	(revision 322820)
++++ assignment-bundles/resources/assignment_sv.properties	(working copy)
+@@ -257,7 +257,7 @@
+ gen.returned=\u00C5terl\u00E4mnad
+ gen.retustud=L\u00E4mna \u00E5ter till student
+ gen.retustudtit=R\u00E4ttning klar, l\u00E4mna tillbaka till student
+-gen.rev=Genuine Text
++gen.rev=Urkund
+ gen.revi=\u00C4ndra
+ gen.review=Redigera
+ gen.reviewing=Ser \u00F6ver
+@@ -528,12 +528,12 @@
+ repsubmi.sorbytur=Sortera efter inl\u00E4mningsdatum
+ resubmit=\u00C5terinl\u00E4mna
+ return=\u00C5terl\u00E4mnad
+-review.allow=Till\u00E5t studenter att se rapport
+-review.noreport=ingen rapport
++review.allow=Till\u00e5t studenter att se rapporten
++review.noreport=Ingen rapport
+ review.notavail=\u00C4nnu ej tillg\u00E4nglig
+-review.report=Rapport fr\u00E5n Genuine Text 
+-review.title=Plagiatkontroll
+-review.use=Anv\u00E4nd plagiatkontroll
++review.report=Rapport fr\u00e5n Urkund 
++review.title=Plagiatkontroll ({0})
++review.use=Anv\u00e4nd plagiatkontroll ({0})
+ review.viewreport=Visa rapport
+ revise=Redigera
+ saved_grading=Kommentarer och/eller resultat har sparats.
+@@ -595,6 +595,7 @@
+ thenewass=den nya uppgiften 
+ thesub=inl\u00E4mningen 
+ thiasshas=Du har inte angett n\u00E5gra instruktioner till denna uppgift. \u00C4r detta korrekt?
++wrongsubmtype=F\u00f6r plagiatkontroll b\u00f6r typ av inl\u00e4mning s\u00e4ttas till "Enbart uppladdning av enstaka fil".
+ ungra=Ej betygsatt
+ update=Uppdatera
+ uploadall.alert.choose.element=Du m\u00E5ste v\u00E4lja minst ett objekt i listan f\u00F6r uppladdning.
+@@ -759,4 +760,37 @@
+ failed.upload=                      Uppladdningen misslyckades
+ download_url_link_label=                   L\u00e4nk f\u00f6r att ladda ned allt
+ allPurpose_save=       Spara
+-allPurpose_cancel=               Avbryt
+\ No newline at end of file
++allPurpose_cancel=               Avbryt
++
++content_review.error=Ett ok\u00e4nt fel intr\u00e4ffade. Granskningsresultat g\u00e4llande originalitet f\u00f6r denna bilaga \u00e4r inte tillg\u00e4ngligt. 
++content_review.error.REPORT_ERROR_NO_RETRY_CODE=Ett fel uppstod n\u00e4r originalitetsrapporten f\u00f6r denna bilaga skulle h\u00e4mtas. Rapporten kan inte h\u00e4mtas. 
++content_review.error.REPORT_ERROR_RETRY_CODE=Ett fel uppstod n\u00e4r originalitetsrapporten f\u00f6r denna bilaga skulle h\u00e4mtas. Systemet kommer automatiskt att g\u00f6ra ett nytt f\u00f6rs\u00f6k att h\u00e4mta rapporten. 
++content_review.error.SUBMISSION_ERROR_NO_RETRY_CODE=Ett fel uppstod n\u00e4r denna bilaga skulle skickas f\u00f6r verifiering av originalitet. 
++content_review.error.SUBMISSION_ERROR_RETRY_CODE=Ett fel uppstod n\u00e4r denna bilaga skulle skickas f\u00f6r verifiering av originalitet. Systemet kommer automatiskt att g\u00f6ra ett nytt f\u00f6rs\u00f6k att skicka bilagan.
++content_review.error.SUBMISSION_ERROR_RETRY_EXCEEDED_CODE=Alla f\u00f6rs\u00f6k att verifiera bilagans originalitet misslyckades. Taket f\u00f6r antalet f\u00f6rs\u00f6k har uppn\u00e5tts.
++content_review.error.SUBMISSION_ERROR_USER_DETAILS_CODE=Ett fel uppstod n\u00e4r denna bilaga skulle skickas f\u00f6r verifiering av originalitet. Anv\u00e4ndarinformation saknas eller \u00e4r felaktig. 
++content_review.error.REPORT_ERROR_ATTACHMENT_NOT_FOUND=Ett fel uppstod n\u00e4r denna bilaga skulle skickas f\u00f6r verifiering av originalitet. Kontrollera filformatet och filstorlek. 
++content_review.error.createAssignment=Uppgiften har sparats, men Urkund-informationen kunde ej uppdateras. V\u00e4nligen f\u00f6rs\u00f6k spara igen. 
++content_review.note=<div><em>OBS:</em><ol><li>S\u00e4tt typ av inl\u00e4mning till &quot;Enbart uppladdning av enstaka fil&quot;</li> <li>Meddela studenter\:</li><ol><li>Anv\u00e4nd enbart filer av typen\: Word (doc, docx), Powerpoint (ppt, pptx), OpenDocument (odt, sxw), pdf, html, htm, rtf eller txt.</li><li>Inkludera alltid fil\u00e4ndelsen i filnamnet.</li></ol></ol></div> 
++content_review.pending.info=Bifogad fil har skickats in och v\u00e4ntar p\u00e5 granskning.
++review.originality.check=
++review.originality.check.institution=Institutionsspecifikt repository 
++review.originality.check.internet=Nuvarande och arkiverat internet
++review.originality.check.pub=Tidskrifter, tidningar, och publikationer
++review.originality.check.turnitin=Turnitin dokumentarkiv 
++review.originality.reports=Generera originalitetsrapporter\: 
++review.originality.reports.due=P\u00e5 sista inl\u00e4mningsdatum 
++review.originality.reports.immediately=Genast 
++review.submit.papers.repository=Skicka in dokument till f\u00f6ljande arkiv\: 
++review.submit.papers.repository.institution=Institutions dokumentarkiv 
++review.submit.papers.repository.none=Inget 
++review.submit.papers.repository.standard=Standard dokumentarkiv
++review.contentReviewIndicator	=	Inl\u00e4mning granskas av {0}.<br/>Anv\u00e4nd enbart filer av typen\: Word (doc, docx), Powerpoint (ppt, pptx), OpenDocument (odt, sxw), pdf, html, htm, rtf eller txt.<br/>
++review.exclude.bibliographic	=	Uteslut bibliometriska data fr\u00e5n Likhetsindex f\u00f6r alla inl\u00e4mningar i denna uppgift
++review.exclude.matches.by	=	Uteslut tr\u00e4ffar genom:
++review.exclude.matches.header	=	alternativ f\u00f6r uteslutande:
++review.exclude.matches.percentage	=	Procent tr\u00e4ff:
++review.exclude.matches.value_error	=	Ett v\u00e4rde (0-100) kr\u00e4vs.
++review.exclude.matches.wordmax	=	Upp till antal ord:
++review.exclude.quoted	=	Uteslut citerat material fr\u00e5n Likhetsindex f\u00f6r alla inl\u00e4mningar i denna uppgift
++review.exclude.smallMatches	=	Uteslut sm\u00e5 tr\u00e4ffar
+Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
+===================================================================
+--- assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(revision 322820)
++++ assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(working copy)
+@@ -10148,7 +10148,7 @@
+ //			 Code to get updated report if default
+ 			if (m_submittedAttachments.isEmpty()) { 
+ 				M_log.debug(this.getId() + " getReviewReport No attachments submitted."); 
+-				return "Error";
++				return "not submitted";
+ 			}
+ 			else
+ 			{
+@@ -10169,7 +10169,7 @@
+ 					
+ 				} catch (Exception e) {
+ 					M_log.warn(":getReviewReport() " + e.getMessage());
+-					return "Error";
++					return "error";
+ 				}
+ 					
+ 			}
+@@ -10211,7 +10211,7 @@
+                     if (cr == null )
+                     {
+                         M_log.debug(this + " getReviewError No suitable attachments found in list");
+-                        return null;
++                        return rb.getString("content_review.error.REPORT_ERROR_ATTACHMENT_NOT_FOUND");
+                     }
+ 
+                     String contentId = cr.getId();
+@@ -10224,10 +10224,12 @@
+                     if (status != null) {
+                         if (status.equals(ContentReviewItem.REPORT_ERROR_NO_RETRY_CODE)) {
+                             errorMessage = rb.getString("content_review.error.REPORT_ERROR_NO_RETRY_CODE");
++							errorMessage = errorMessage + "Error: " + contentReviewService.getReviewError(contentId);
+                         } else if (status.equals(ContentReviewItem.REPORT_ERROR_RETRY_CODE)) {
+                             errorMessage = rb.getString("content_review.error.REPORT_ERROR_RETRY_CODE");
+                         } else if (status.equals(ContentReviewItem.SUBMISSION_ERROR_NO_RETRY_CODE)) {
+                             errorMessage = rb.getString("content_review.error.SUBMISSION_ERROR_NO_RETRY_CODE");
++							errorMessage = errorMessage + "Error: " + contentReviewService.getReviewError(contentId);
+                         } else if (status.equals(ContentReviewItem.SUBMISSION_ERROR_RETRY_CODE)) {
+                             errorMessage = rb.getString("content_review.error.SUBMISSION_ERROR_RETRY_CODE");
+                         } else if (status.equals(ContentReviewItem.SUBMISSION_ERROR_RETRY_EXCEEDED)) {
+@@ -10949,7 +10951,9 @@
+ 		protected void setAll(AssignmentSubmission submission)
+ 		{
+ 			
+-			if (contentReviewService != null) {
++			AssignmentContent c = submission.getAssignment().getContent();
++
++			if (contentReviewService != null && c != null && c.getAllowReviewService()) {				
+ 				m_reviewScore = submission.getReviewScore();
+ 				// The report given by the content review service
+ 				m_reviewReport = submission.getReviewReport();
+Index: assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
+===================================================================
+--- assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(revision 322820)
++++ assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(working copy)
+@@ -2371,6 +2371,8 @@
+ 			submitRadio = state.getAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO).toString();		
+ 		context.put("value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO", submitRadio);
+ 		context.put("show_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT", subOptions);
++		context.put("show_NEW_ASSIGNMENT_REVIEW_PAPERS_REPOSITORY_HIDE", ServerConfigurationService.getString("turnitin.repository.setting.hide","false"));
++		context.put("show_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_SPEED_HIDE", ServerConfigurationService.getString("turnitin.report.speed.setting.hide","false"));
+ 		
+ 		List<String> reportGenOptions = getReportGenOptions();
+ 		String reportRadio = ServerConfigurationService.getString("turnitin.report_gen_speed.setting.value", null) == null ? NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY : ServerConfigurationService.getString("turnitin.report_gen_speed.setting.value");
+@@ -6851,6 +6853,13 @@
+ 			}
+ 		}
+ 
++        if (validify 
++            && "true".equals(state.getAttribute(NEW_ASSIGNMENT_USE_REVIEW_SERVICE))
++            && submissionType != 5)
++		{
++			addAlert(state, rb.getString("wrongsubmtype"));
++		}
++
+ 		if (validify && state.getAttribute(NEW_ASSIGNMENT_DESCRIPTION_EMPTY) != null)
+ 		{
+ 			addAlert(state, rb.getString("thiasshas"));
+Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
+===================================================================
+--- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(revision 322820)
++++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(working copy)
+@@ -241,15 +241,15 @@
+ 					</td>
+ 				</tr>
+ 			#end
+-				#if($allowReviewService && $assignmentContent.AllowReviewService && $assignmentContent.AllowStudentViewReport)
++				#if($allowReviewService && $assignment.getContent().AllowReviewService)
+ 					<tr>
+ 						<th>
+ 							$tlang.getString("review.report")
+ 						</th>
+ 							<td>
+-							#if (!$submission)
++							#if ($submission.getReviewReport().equals("not submitted"))
+                                 				$tlang.getString("review.notavail")
+-                            				#elseif ($submission.getReviewReport().equals("Error"))
++                            #elseif ($submission.getReviewReport().equals("error"))
+ 								<div class="alertMessage" >$!submission.getReviewError()</div>
+ 							#else
+ 								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
+Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
+===================================================================
+--- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(revision 322820)
++++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(working copy)
+@@ -608,6 +608,7 @@
+ 				
+ 					$tlang.getString("content_review.note")
+ 					
++					#if(!$show_NEW_ASSIGNMENT_REVIEW_PAPERS_REPOSITORY_HIDE.equals("true"))
+ 					$tlang.getString("review.submit.papers.repository")
+ 					<br/>
+ 					<div class="indnt1">
+@@ -621,6 +622,9 @@
+ 							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION"))checked#end/>$tlang.getString("review.submit.papers.repository.institution")<br/>
+ 						#end
+ 					</div>
++					#end
++					
++					#if(!$show_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_SPEED_HIDE.equals("true"))
+ 					<br/>
+ 					$tlang.getString("review.originality.reports")
+ 					<br/>
+@@ -632,6 +636,8 @@
+ 							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE"))checked#end/>$tlang.getString("review.originality.reports.due")<br/>
+ 						#end
+ 					</div>
++					#end
++					
+ 					<br/>
+ 					<div class="checkbox">
+ 						#if ($!value_AllowStudentView.equals("true"))
+Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
+===================================================================
+--- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(revision 322820)
++++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(working copy)
+@@ -380,7 +380,7 @@
+ 												$validator.escapeHtml($validator.limit($!assignment.getTitle(), 64))
+ 												
+ 											#if ($assignmentContent.getAllowReviewService())
+-												<img alt="$reviewIndicator" title="$reviewIndicator" src="/library/image/silk/rosette.png" />
++												<img alt="$reviewServiceUse" title="$reviewServiceUse" src="/library/image/silk/rosette.png" />
+ 											#end
+ 											</a>
+ 										</h4>
+Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
+===================================================================
+--- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(revision 322820)
++++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(working copy)
+@@ -153,9 +153,9 @@
+ 							$tlang.getString("review.report")
+ 						</th>
+ 							<td>
+-							#if (!$submission)
++							#if ($submission.getReviewReport().equals("not submitted"))
+ 								$tlang.getString("review.notavail")
+-							#elseif ($submission.getReviewReport().equals("Error"))
++							#elseif ($submission.getReviewReport().equals("error"))
+ 								<div class="alertMessage" >$!submission.getReviewError()</div>
+ 							#else
+ 								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
+Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
+===================================================================
+--- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(revision 322820)
++++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(working copy)
+@@ -681,7 +681,7 @@
+ 						#end
+ 					</h3>	
+ 					#if ($assignment.getContent().getAllowReviewService())
+-						<p class="instruction"><img alt="$reviewIndicator" title="$reviewIndicator" src="/library/image/silk/rosette.png" /> $reviewIndicator</p>
++						<p class="instruction"><img alt="$reviewServiceUse" title="$reviewServiceUse" src="/library/image/silk/rosette.png" /> $reviewIndicator</p>
+ 					#end
+ 					#set ($size = 0)
+ 					#set ($props = false)

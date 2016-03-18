@@ -1,0 +1,14 @@
+.idea
+.project
+.classpath
+.settings
+*.iml
+*.swp
+*.orig
+*.rej
+target
+.directory
+.sass-cache
+.metadata
+.DS_Store
+nb-configuration.xml
