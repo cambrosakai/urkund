@@ -59,6 +59,10 @@ urkund.lang=<language code>
 # from the user submitting the document
 urkund.spoofemailcontext=<2-3 characters long integration context>
 
+# The number of times to retry submitting/getting report before giving up
+# Default value is 10
+urkund.maxRetry=<number of retries>
+
 # Settings used by the Assignment tool
 # All of these must be used as they hide settings not relevant to the Urkund service
 assignment.useContentReview=true
