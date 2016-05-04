@@ -221,11 +221,16 @@ public class UrkundReviewServiceImpl extends BaseReviewServiceImpl {
         return true;
     }
 
+    
     @Override
-    public String getIconUrlforScore(Long score) {
+    public String getIconUrlforScore(Long score, Long warnings) {
 
         String urlBase = "/sakai-contentreview-tool-urkund/images/";
         String suffix = ".gif";
+        
+        if (warnings > 0) {
+            return urlBase + "w" + suffix;
+        }        
 
         if (score.equals((long) 0)) {
             return urlBase + "0" + suffix;
@@ -337,7 +342,7 @@ public class UrkundReviewServiceImpl extends BaseReviewServiceImpl {
             throw new QueueException("Content " + contentId + " is already queued, not re-queued");
         }
         ContentReviewItemUrkund item = new ContentReviewItemUrkund(userId, siteId, taskId, contentId, new Date(),
-                ContentReviewItem.NOT_SUBMITTED_CODE, null);
+                ContentReviewItem.NOT_SUBMITTED_CODE, null, null, null);
         item.setNextRetryTime(new Date());
         dao.save(item);
     }
@@ -838,9 +843,6 @@ public class UrkundReviewServiceImpl extends BaseReviewServiceImpl {
     @SuppressWarnings({"deprecation", "unchecked"})
     public void checkForReportsBulk() {
 
-        SimpleDateFormat dform = ((SimpleDateFormat) DateFormat.getDateInstance());
-        dform.applyPattern(URKUND_DATETIME_FORMAT);
-
         // get the list of all items that are waiting for reports
         List<ContentReviewItemUrkund> awaitingReport = dao.findByProperties(ContentReviewItemUrkund.class,
                 new String[]{"status"},
@@ -891,26 +893,20 @@ public class UrkundReviewServiceImpl extends BaseReviewServiceImpl {
                         log.error("status state == null");
                     } else {
                         String state = rsp.status.state.toLowerCase();
-                        if ("analyzed".equals(state)
-                                && currentItem.getExternalId().equals(rsp.externalId)) {
-                            currentItem.setReviewScore(Math.round(rsp.report.significance));
-                            currentItem.setReportUrl(rsp.report.reportUrl);
-                            currentItem.setStatus(ContentReviewItem.SUBMITTED_REPORT_AVAILABLE_CODE);
-                            currentItem.setDateReportReceived(new Date());
+                        if (currentItem.getExternalId().equals(rsp.externalId)) {
+                            log.info("Urkund submission report, state: " + state + ", " + rsp.toString());
+                            if ("analyzed".equals(state)) {
+                                currentItem.setReviewScore(Math.round(rsp.report.significance));
+                                currentItem.setReportUrl(rsp.report.reportUrl);
+                                currentItem.setStatus(ContentReviewItem.SUBMITTED_REPORT_AVAILABLE_CODE);
+                                currentItem.setDateReportReceived(new Date());
+                                currentItem.setWarnings(rsp.report.warnings.size());
+                                currentItem.setOptOutUrl(rsp.document.optOutInfo.url);
+                            } else {
+                                currentItem.setStatus(ContentReviewItem.REPORT_ERROR_NO_RETRY_CODE);
+                                currentItem.setLastError(rsp.status.message);
+                            } 
                             dao.update(currentItem);
-                            log.info("New report received: " + currentItem.getExternalId() + ", review score:" + currentItem.getReviewScore());
-                        } else if ("rejected".equals(state)
-                                && currentItem.getExternalId().equals(rsp.externalId)) {
-                            currentItem.setStatus(ContentReviewItem.REPORT_ERROR_NO_RETRY_CODE);
-                            currentItem.setLastError(rsp.status.message);
-                            dao.update(currentItem);
-                            log.info("Rejected submission: " + currentItem.getExternalId() + ", message: " + rsp.status.message);
-                        } else if ("error".equals(state)
-                                && currentItem.getExternalId().equals(rsp.externalId)) {
-                            currentItem.setStatus(ContentReviewItem.REPORT_ERROR_NO_RETRY_CODE);
-                            currentItem.setLastError(rsp.status.message);
-                            dao.update(currentItem);
-                            log.info("Error processing submission: " + currentItem.getExternalId() + ", message: " + rsp.status.message);
                         }
                     }
                 }
@@ -1068,6 +1064,48 @@ public class UrkundReviewServiceImpl extends BaseReviewServiceImpl {
     private String generateSpoofedSubmitterEmail(User user, String siteId) {
         String spoofedEmail = String.format(URKUND_SPOOFED_EMAIL_TEMPLATE, user.getId(), siteId, spoofEmailContext);
         return spoofedEmail;
+    }
+
+    @Override
+    public int getReviewWarnings(String contentId) throws QueueException, ReportException, Exception {
+        List<ContentReviewItemUrkund> matchingItems = getItemsByContentId(contentId);
+        if (matchingItems.size() == 0) {
+            log.debug("Content " + contentId + " has not been queued previously");
+            throw new QueueException("Content " + contentId + " has not been queued previously");
+        }
+
+        if (matchingItems.size() > 1) {
+            log.debug("More than one matching item - using first item found");
+        }
+
+        ContentReviewItemUrkund item = (ContentReviewItemUrkund) matchingItems.iterator().next();
+        if (item.getStatus().compareTo(ContentReviewItem.SUBMITTED_REPORT_AVAILABLE_CODE) != 0) {
+            log.debug("Report not available: " + item.getStatus());
+            throw new ReportException("Report not available: " + item.getStatus());
+        }
+
+        return item.getWarnings();
+    }
+
+    @Override
+    public String getOptOutUrl(String contentId) throws QueueException, ReportException {
+        List<ContentReviewItemUrkund> matchingItems = getItemsByContentId(contentId);
+        if (matchingItems.size() == 0) {
+            log.debug("Content " + contentId + " has not been queued previously");
+            throw new QueueException("Content " + contentId + " has not been queued previously");
+        }
+
+        if (matchingItems.size() > 1) {
+            log.debug("More than one matching item - using first item found");
+        }
+
+        ContentReviewItemUrkund item = (ContentReviewItemUrkund) matchingItems.iterator().next();
+        if (item.getStatus().compareTo(ContentReviewItem.SUBMITTED_REPORT_AVAILABLE_CODE) != 0) {
+            log.debug("Report not available: " + item.getStatus());
+            throw new ReportException("Report not available: " + item.getStatus());
+        }
+
+        return item.getOptOutUrl();
     }
 
 }

@@ -30,6 +30,8 @@
         
         <!-- Urkund extension -->
         <property name="reportUrl" type="string" length="255" not-null="false" />
+        <property name="optOutUrl" type="string" length="255" not-null="false" />
+        <property name="warnings" type="integer" not-null="false" />
                 
     </class>
         

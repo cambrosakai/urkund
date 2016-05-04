@@ -80,7 +80,7 @@ public abstract class BaseReviewServiceImpl implements ContentReviewService {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public String getIconUrlforScore(Long score) {
+    public String getIconUrlforScore(Long score, Long warnings) {
         throw new UnsupportedOperationException("Not implemented");
     }
 

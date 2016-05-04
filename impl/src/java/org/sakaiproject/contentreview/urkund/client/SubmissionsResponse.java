@@ -17,6 +17,7 @@ package org.sakaiproject.contentreview.urkund.client;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  *
@@ -111,7 +112,7 @@ public final class SubmissionsResponse {
 
             @Override
             public String toString() {
-                return "OptOutInfo{" + "message=" + message + ", url=" + url + '}';
+                return "OptOutInfo{" + "url=" + url + ", message=..." + '}';
             }
         }
     }
@@ -124,20 +125,55 @@ public final class SubmissionsResponse {
         public final float significance;
         public final long sourceCount;
         public final long id;
+        public final List<Warnings> warnings;
 
         @JsonCreator
-        public Report(@JsonProperty("MatchCount") long matchCount, @JsonProperty("ReportUrl") String reportUrl, @JsonProperty("Significance") float significance, @JsonProperty("SourceCount") long sourceCount, @JsonProperty("Id") long id) {
+        public Report(
+                @JsonProperty("MatchCount") long matchCount, 
+                @JsonProperty("ReportUrl") String reportUrl, 
+                @JsonProperty("Significance") float significance, 
+                @JsonProperty("SourceCount") long sourceCount, 
+                @JsonProperty("Id") long id,
+                @JsonProperty("Warnings") List<Warnings> warnings) {
             this.matchCount = matchCount;
             this.reportUrl = reportUrl;
             this.significance = significance;
             this.sourceCount = sourceCount;
             this.id = id;
+            this.warnings = warnings;
         }
         
         @Override
         public String toString() {
-            return "Report{" + "matchCount=" + matchCount + ", reportUrl=" + reportUrl + ", significance=" + significance + ", sourceCount=" + sourceCount + ", id=" + id + '}';
+            StringBuilder sb = new StringBuilder();
+            sb.append("Report{" + "matchCount=" + matchCount + ", reportUrl=" + reportUrl + ", significance=" + significance + ", sourceCount=" + sourceCount + ", id=" + id );
+            for (Warnings warning: this.warnings) {
+                sb.append(", ");
+                sb.append(warning.toString());
+            }
+            sb.append('}');
+            return sb.toString();
         }
+       
+        @JsonIgnoreProperties(ignoreUnknown=true)
+        public static final class Warnings {
+
+            public final String warningType;
+            public final String excerpt;
+            public final String message;
+
+            @JsonCreator
+            public Warnings(@JsonProperty("WarningType") String warningType, @JsonProperty("Excerpt") String excerpt, @JsonProperty("Message") String message) {
+                this.warningType = warningType;
+                this.excerpt = excerpt;
+                this.message = message;
+            }
+
+            @Override
+            public String toString() {
+                return "Warnings{" + "warningType=" + warningType + ", excerpt=" + excerpt + ", message=" + "..." + '}';
+            }
+        }        
     }
     
     @Override

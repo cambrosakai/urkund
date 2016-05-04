@@ -56,13 +56,13 @@ public class ContentReviewDaoImplTest extends AbstractTransactionalSpringContext
 
     // run this before each test starts and as part of the transaction
     protected void onSetUpInTransaction() {
-        contentReviewItemLockedExp = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report");
+        contentReviewItemLockedExp = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report", null, null);
         contentReviewDao.save(contentReviewItemLockedExp);
 
         //first test we have saved the item
         assertNotNull(contentReviewItemLockedExp.getId());
 
-        ContentReviewItemUrkund newItem = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report");
+        ContentReviewItemUrkund newItem = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report", null, null);
         contentReviewDao.save(newItem);
 
         //now this should have an id greater that is different from the one above
@@ -74,11 +74,11 @@ public class ContentReviewDaoImplTest extends AbstractTransactionalSpringContext
         assertTrue(contentReviewDao.obtainLock(sId, ADMIN_USER, -1000));
 
         //lock item
-        contentReviewItemLocked = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report");
+        contentReviewItemLocked = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report", null, null);
         contentReviewDao.save(contentReviewItemLocked);
         contentReviewDao.obtainLock(Long.valueOf(contentReviewItemLocked.getId()).toString(), ADMIN_USER, 10000);
 
-        contentReviewItemUnlocked = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report");
+        contentReviewItemUnlocked = new ContentReviewItemUrkund(USER, "site", "task", "content", new Date(), ContentReviewItem.NOT_SUBMITTED_CODE, "url_to_report", null, null);
         contentReviewDao.save(contentReviewItemUnlocked);
 
     }

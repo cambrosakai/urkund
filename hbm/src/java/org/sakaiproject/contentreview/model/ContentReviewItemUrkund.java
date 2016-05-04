@@ -22,6 +22,8 @@ import java.util.Date;
  */
 public class ContentReviewItemUrkund extends ContentReviewItem {
     private String reportUrl;
+    private String optOutUrl;
+    private Integer warnings;
 
     public ContentReviewItemUrkund() {
     }
@@ -30,19 +32,25 @@ public class ContentReviewItemUrkund extends ContentReviewItem {
         super(contentId);
     }
     
-    public ContentReviewItemUrkund(String userId, String siteId, String taskId, String contentId, String externalId, Date dateQueued, Date dateSubmitted, Date dateReportReceived, long status, Integer reviewScore, String reportUrl) {
+    public ContentReviewItemUrkund(String userId, String siteId, String taskId, String contentId, String externalId, Date dateQueued, Date dateSubmitted, Date dateReportReceived, long status, Integer reviewScore, String reportUrl, String optOutUrl, Integer warnings) {
         super(userId, siteId, taskId, contentId, externalId, dateQueued, dateSubmitted, dateReportReceived, status, reviewScore);
         this.reportUrl = reportUrl;
+        this.optOutUrl = optOutUrl;
+        this.warnings = warnings;
     }
 
-    public ContentReviewItemUrkund(String userId, String siteId, String taskId, String contentId, Date dateQueued, Long status, String reportUrl) {
+    public ContentReviewItemUrkund(String userId, String siteId, String taskId, String contentId, Date dateQueued, Long status, String reportUrl, String optOutUrl, Integer warnings) {
         super(userId, siteId, taskId, contentId, dateQueued, status);
         this.reportUrl = reportUrl;
+        this.optOutUrl = optOutUrl;
+        this.warnings = warnings;
     }
 
-    public ContentReviewItemUrkund(String contentId, String reportUrl) {
+    public ContentReviewItemUrkund(String contentId, String reportUrl, String optOutUrl, Integer warnings) {
         super(contentId);
         this.reportUrl = reportUrl;
+        this.optOutUrl = optOutUrl;
+        this.warnings = warnings;
     }
     
     
@@ -52,5 +60,20 @@ public class ContentReviewItemUrkund extends ContentReviewItem {
 
     public void setReportUrl(String reportUrl) {
         this.reportUrl = reportUrl;
+    }
+    
+    public String getOptOutUrl() {
+        return optOutUrl;
+    }
+
+    public void setOptOutUrl(String optOutUrl) {
+        this.optOutUrl = optOutUrl;
+    }
+    public Integer getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(Integer warnings) {
+        this.warnings = warnings;
     }
 }

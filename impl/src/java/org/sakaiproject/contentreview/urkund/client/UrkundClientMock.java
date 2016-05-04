@@ -30,7 +30,7 @@ public class UrkundClientMock implements UrkundClient {
                 new SubmissionsResponse.Status(accepted ? "Accepted" : "Analyzed", "Status message"), 
                 new SubmissionsResponse.Document(false, "2015-08-24T33:44:55+1", "https://api.urkund.se/download_report", 
                         new SubmissionsResponse.Document.OptOutInfo("https://api.urkund.se/optout_document", "Optout description"), 101),
-                new SubmissionsResponse.Report(lastChar-20, "https://api.urkund.se/report_url", sign, lastChar-30, 102),
+                new SubmissionsResponse.Report(lastChar-20, "https://api.urkund.se/report_url", sign, lastChar-30, 102,null),
                 "Mock subject", "Mock message", false);
         
         ArrayList<SubmissionsResponse> list = new ArrayList<SubmissionsResponse>();
