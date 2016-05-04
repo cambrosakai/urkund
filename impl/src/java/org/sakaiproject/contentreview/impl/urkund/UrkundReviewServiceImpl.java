@@ -902,6 +902,8 @@ public class UrkundReviewServiceImpl extends BaseReviewServiceImpl {
                                 currentItem.setDateReportReceived(new Date());
                                 currentItem.setWarnings(rsp.report.warnings.size());
                                 currentItem.setOptOutUrl(rsp.document.optOutInfo.url);
+                            } else if ("accepted".equals(state)){
+                                currentItem.setOptOutUrl(rsp.document.optOutInfo.url);
                             } else {
                                 currentItem.setStatus(ContentReviewItem.REPORT_ERROR_NO_RETRY_CODE);
                                 currentItem.setLastError(rsp.status.message);
