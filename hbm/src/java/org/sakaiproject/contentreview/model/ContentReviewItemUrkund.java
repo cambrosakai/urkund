@@ -74,6 +74,10 @@ public class ContentReviewItemUrkund extends ContentReviewItem {
     }
 
     public void setWarnings(Integer warnings) {
-        this.warnings = warnings;
+        if (warnings == null) {
+            this.warnings = 0;
+        } else {
+            this.warnings = warnings;
+        }
     }
 }
