@@ -1,7 +1,8 @@
-Index: assignment-bundles/resources/assignment.properties
+Index: assignment/assignment-bundles/resources/assignment.properties
 ===================================================================
---- assignment-bundles/resources/assignment.properties	(revision 322820)
-+++ assignment-bundles/resources/assignment.properties	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties
+--- a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties	(working copy)
 @@ -433,6 +433,7 @@
  theisnostudent = There is no student.
  
@@ -61,10 +62,18 @@ Index: assignment-bundles/resources/assignment.properties
  
  noti.releaseresubmission.subject.content=Assignment submission has been corrected
  noti.releaseresubmission.text=Your submission to assignment "{0}" has been corrected and it allows resubmissions until the due date. Please go to {1} to view details.
-Index: assignment-bundles/resources/assignment_sv.properties
+@@ -943,3 +945,6 @@
+ settings.access.selectGroups = Note - You must select at least one group.
+ selected.group = Selected Group
+ selected.groups = Selected Groups
++
++gen.optout=Exempt from Urkund
++gen.optoutlink=Show
+Index: assignment/assignment-bundles/resources/assignment_sv.properties
 ===================================================================
---- assignment-bundles/resources/assignment_sv.properties	(revision 322820)
-+++ assignment-bundles/resources/assignment_sv.properties	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties
+--- a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties	(working copy)
 @@ -257,7 +257,7 @@
  gen.returned=\u00C5terl\u00E4mnad
  gen.retustud=L\u00E4mna \u00E5ter till student
@@ -100,7 +109,7 @@ Index: assignment-bundles/resources/assignment_sv.properties
  ungra=Ej betygsatt
  update=Uppdatera
  uploadall.alert.choose.element=Du m\u00E5ste v\u00E4lja minst ett objekt i listan f\u00F6r uppladdning.
-@@ -759,4 +760,37 @@
+@@ -759,4 +760,40 @@
  failed.upload=                      Uppladdningen misslyckades
  download_url_link_label=                   L\u00e4nk f\u00f6r att ladda ned allt
  allPurpose_save=       Spara
@@ -140,11 +149,40 @@ Index: assignment-bundles/resources/assignment_sv.properties
 +review.exclude.matches.wordmax	=	Upp till antal ord:
 +review.exclude.quoted	=	Uteslut citerat material fr\u00e5n Likhetsindex f\u00f6r alla inl\u00e4mningar i denna uppgift
 +review.exclude.smallMatches	=	Uteslut sm\u00e5 tr\u00e4ffar
-Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
++
++gen.optout=Exkludera fr\u00e5n Urkund
++gen.optoutlink=Visa
+Index: assignment/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
 ===================================================================
---- assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(revision 322820)
-+++ assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(working copy)
-@@ -10148,7 +10148,7 @@
+diff --git a/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java b/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
+--- a/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(working copy)
+@@ -10050,6 +10050,8 @@
+ 		
+ 		//The score given by the review service
+ 		protected Integer m_reviewScore;
++		protected Integer m_reviewWarnings;
++        protected String m_optOutUrl;
+ 		// The report given by the content review service
+ 		protected String m_reviewReport;
+ 		// The status of the review service
+@@ -10106,10 +10108,11 @@
+                         return -2;
+                     }
+ 
+-					int score = contentReviewService.getReviewScore(contentId);
+-					m_reviewScore = score;
+-					M_log.debug(this + " getReviewScore CR returned a score of: " + score);
+-					return score;
++					m_reviewScore = contentReviewService.getReviewScore(contentId);
++					m_reviewWarnings = contentReviewService.getReviewWarnings(contentId);
++					m_optOutUrl = contentReviewService.getOptOutUrl(contentId);
++					M_log.debug(this + " getReviewScore CR returned a score of: " + m_reviewScore);
++					return m_reviewScore;
+ 						
+ 				} 
+ 				catch (QueueException cie) {
+@@ -10148,7 +10151,7 @@
  //			 Code to get updated report if default
  			if (m_submittedAttachments.isEmpty()) { 
  				M_log.debug(this.getId() + " getReviewReport No attachments submitted."); 
@@ -153,7 +191,7 @@ Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssign
  			}
  			else
  			{
-@@ -10169,7 +10169,7 @@
+@@ -10169,7 +10172,7 @@
  					
  				} catch (Exception e) {
  					M_log.warn(":getReviewReport() " + e.getMessage());
@@ -162,7 +200,7 @@ Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssign
  				}
  					
  			}
-@@ -10211,7 +10211,7 @@
+@@ -10211,7 +10214,7 @@
                      if (cr == null )
                      {
                          M_log.debug(this + " getReviewError No suitable attachments found in list");
@@ -171,7 +209,7 @@ Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssign
                      }
  
                      String contentId = cr.getId();
-@@ -10224,10 +10224,12 @@
+@@ -10224,10 +10227,12 @@
                      if (status != null) {
                          if (status.equals(ContentReviewItem.REPORT_ERROR_NO_RETRY_CODE)) {
                              errorMessage = rb.getString("content_review.error.REPORT_ERROR_NO_RETRY_CODE");
@@ -184,7 +222,16 @@ Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssign
                          } else if (status.equals(ContentReviewItem.SUBMISSION_ERROR_RETRY_CODE)) {
                              errorMessage = rb.getString("content_review.error.SUBMISSION_ERROR_RETRY_CODE");
                          } else if (status.equals(ContentReviewItem.SUBMISSION_ERROR_RETRY_EXCEEDED)) {
-@@ -10949,7 +10951,9 @@
+@@ -10257,7 +10262,7 @@
+ 
+ 		public String getReviewIconUrl() {
+ 			if (m_reviewIconUrl == null )
+-				m_reviewIconUrl = contentReviewService.getIconUrlforScore(Long.valueOf(this.getReviewScore()));
++				m_reviewIconUrl = contentReviewService.getIconUrlforScore(Long.valueOf(this.getReviewScore()), Long.valueOf(this.m_reviewWarnings));
+ 				
+ 			return m_reviewIconUrl;
+ 		}
+@@ -10949,7 +10954,9 @@
  		protected void setAll(AssignmentSubmission submission)
  		{
  			
@@ -195,10 +242,21 @@ Index: assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssign
  				m_reviewScore = submission.getReviewScore();
  				// The report given by the content review service
  				m_reviewReport = submission.getReviewReport();
-Index: assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
+@@ -11119,6 +11126,9 @@
+ 		public List getSubmissionLog() {
+ 		    return m_submissionLog;
+ 		}
++		public String getSubmissionOptOutUrl() {
++		    return m_optOutUrl;
++		}
+ 		public List getGrades() {
+ 		    return m_grades;
+ 		}
+Index: assignment/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
 ===================================================================
---- assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(revision 322820)
-+++ assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java b/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
+--- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(working copy)
 @@ -2371,6 +2371,8 @@
  			submitRadio = state.getAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO).toString();		
  		context.put("value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO", submitRadio);
@@ -222,10 +280,20 @@ Index: assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/Assignment
  		if (validify && state.getAttribute(NEW_ASSIGNMENT_DESCRIPTION_EMPTY) != null)
  		{
  			addAlert(state, rb.getString("thiasshas"));
-Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
+@@ -15757,7 +15766,7 @@
+ 	private ContentReviewService contentReviewService;
+ 	public String getReportURL(Long score) {
+ 		getContentReviewService();
+-		return contentReviewService.getIconUrlforScore(score);
++		return contentReviewService.getIconUrlforScore(score, new Long(0));
+ 	}
+ 	
+ 	private void getContentReviewService() {
+Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
 ===================================================================
---- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(revision 322820)
-+++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
+--- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(working copy)
 @@ -241,15 +241,15 @@
  					</td>
  				</tr>
@@ -245,10 +313,33 @@ Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor
  								<div class="alertMessage" >$!submission.getReviewError()</div>
  							#else
  								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
-Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
+@@ -270,6 +270,21 @@
+ 						</td>
+ 					</tr>
+ 				#end
++				#if($allowReviewService && $assignment.getContent().AllowReviewService)
++					<tr>
++						<th>$tlang.getString('gen.optout')</th>
++						<td>
++							#if ($submission.getReviewReport().equals("not submitted") || 
++							     $submission.getReviewReport().equals("error") ||
++								 !$submission.getSubmissionOptOutUrl() ||
++								 $submission.getSubmissionOptOutUrl().length == 0)
++								$tlang.getString("review.notavail")
++							#else
++								<a href="$submission.getSubmissionOptOutUrl()" target="_blank">$tlang.getString("gen.optoutlink")</a>
++							#end
++						</td>
++					</tr>		
++				#end
+ 		</table>
+ 		## show or hide assignment instruction and attachment
+ 			#if ($assignment_expand_flag)
+Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
 ===================================================================
---- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(revision 322820)
-+++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
+--- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(working copy)
 @@ -608,6 +608,7 @@
  				
  					$tlang.getString("content_review.note")
@@ -276,10 +367,11 @@ Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor
  					<br/>
  					<div class="checkbox">
  						#if ($!value_AllowStudentView.equals("true"))
-Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
+Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
 ===================================================================
---- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(revision 322820)
-+++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
+--- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(working copy)
 @@ -380,7 +380,7 @@
  												$validator.escapeHtml($validator.limit($!assignment.getTitle(), 64))
  												
@@ -289,10 +381,11 @@ Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assig
  											#end
  											</a>
  										</h4>
-Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
+Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
 ===================================================================
---- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(revision 322820)
-+++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
+--- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(working copy)
 @@ -153,9 +153,9 @@
  							$tlang.getString("review.report")
  						</th>
@@ -305,10 +398,11 @@ Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_vi
  								<div class="alertMessage" >$!submission.getReviewError()</div>
  							#else
  								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
-Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
+Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
 ===================================================================
---- assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(revision 322820)
-+++ assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(working copy)
+diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
+--- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(revision 325613)
++++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(working copy)
 @@ -681,7 +681,7 @@
  						#end
  					</h3>	
@@ -318,3 +412,61 @@ Index: assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_vi
  					#end
  					#set ($size = 0)
  					#set ($props = false)
+Index: content-review/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java
+===================================================================
+diff --git a/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java b/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java
+--- a/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java	(revision 325613)
++++ b/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java	(working copy)
+@@ -71,6 +71,7 @@
+ 	private String lastError;
+ 	private String iconUrl;
+ 	private Long retryCount;
++
+ 	/**
+ 	 * Default constructor
+ 	 */
+Index: content-review/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java
+===================================================================
+diff --git a/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java b/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java
+--- a/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java	(revision 325613)
++++ b/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java	(working copy)
+@@ -77,6 +77,27 @@
+ 	throws QueueException, ReportException;
+ 	
+ 	/**
++	 *  Retrieve amount of warnings for a specific item
++	 * @param contentId
++	 * @return amount of warnings
++	 * @throws QueueException
++	 * @throws ReportException
++	 * @throws Exception
++	  */
++	public int getReviewWarnings(String contentId)
++	throws QueueException, ReportException, Exception;
++	
++	/**
++	 *  Get the URL for showing the opt-out status
++	 * @param contentId
++	 * @return the url
++	 * @throws QueueException
++	 * @throws ReportException
++	 */
++	public String getOptOutUrl(String contentId)
++	throws QueueException, ReportException;
++        
++	/**
+ 	 * Get the URL of a report constructed for a student
+ 	 * @param contentId
+ 	 * @return
+@@ -217,9 +238,10 @@
+ 	/**
+ 	 *  Get a icon URL that for a specific score
+ 	 * @param score
++         * @param warnings
+ 	 * @return
+ 	 */
+-	public String getIconUrlforScore(Long score);
++	public String getIconUrlforScore(Long score, Long warnings);
+ 	
+ 	/**
+ 	 *  Does the service support resubmissions?

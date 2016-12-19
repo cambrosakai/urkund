@@ -20,8 +20,8 @@ mvn clean install sakai:deploy
 
 Patching
 --------
-It is necessary to make some changes of the Assignment tool and a patch for 
-10.6 is provided in the file assignments-10.6.patch.
+It is necessary to make some changes of the Assignment tool and the content-review module
+and a patch for 10.6 is provided in the file sakai-10.6.patch.
 
 The patch contains both source code and some english and swedish translations.
 
