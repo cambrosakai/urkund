@@ -1,8 +1,8 @@
 Index: assignment/assignment-bundles/resources/assignment.properties
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties
---- a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.properties	(working copy)
+diff --git a/assignment/assignment-bundles/resources/assignment.properties b/assignment/assignment-bundles/resources/assignment.properties
+--- a/assignment/assignment-bundles/resources/assignment.properties	(revision 325613)
++++ b/assignment/assignment-bundles/resources/assignment.properties	(working copy)
 @@ -433,6 +433,7 @@
  theisnostudent = There is no student.
  
@@ -71,9 +71,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment.
 +gen.optoutlink=Show
 Index: assignment/assignment-bundles/resources/assignment_sv.properties
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties
---- a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_sv.properties	(working copy)
+diff --git a/assignment/assignment-bundles/resources/assignment_sv.properties b/assignment/assignment-bundles/resources/assignment_sv.properties
+--- a/assignment/assignment-bundles/resources/assignment_sv.properties	(revision 325613)
++++ b/assignment/assignment-bundles/resources/assignment_sv.properties	(working copy)
 @@ -257,7 +257,7 @@
  gen.returned=\u00C5terl\u00E4mnad
  gen.retustud=L\u00E4mna \u00E5ter till student
@@ -154,9 +154,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-bundles/resources/assignment_
 +gen.optoutlink=Visa
 Index: assignment/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java b/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
---- a/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(working copy)
+diff --git a/assignment/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java b/assignment/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java
+--- a/assignment/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(revision 325613)
++++ b/assignment/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java	(working copy)
 @@ -10050,6 +10050,8 @@
  		
  		//The score given by the review service
@@ -254,9 +254,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaip
  		}
 Index: assignment/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java b/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
---- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(working copy)
+diff --git a/assignment/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java b/assignment/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java
+--- a/assignment/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(revision 325613)
++++ b/assignment/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java	(working copy)
 @@ -2371,6 +2371,8 @@
  			submitRadio = state.getAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO).toString();		
  		context.put("value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO", submitRadio);
@@ -291,9 +291,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/java/org/sakaip
  	private void getContentReviewService() {
 Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
---- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(working copy)
+diff --git a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm
+--- a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(revision 325613)
++++ b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm	(working copy)
 @@ -241,15 +241,15 @@
  					</td>
  				</tr>
@@ -337,9 +337,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assig
  			#if ($assignment_expand_flag)
 Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
---- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(working copy)
+diff --git a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm
+--- a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(revision 325613)
++++ b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_instructor_new_edit_assignment.vm	(working copy)
 @@ -608,6 +608,7 @@
  				
  					$tlang.getString("content_review.note")
@@ -369,9 +369,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assig
  						#if ($!value_AllowStudentView.equals("true"))
 Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
---- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(working copy)
+diff --git a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm
+--- a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(revision 325613)
++++ b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_list_assignments.vm	(working copy)
 @@ -380,7 +380,7 @@
  												$validator.escapeHtml($validator.limit($!assignment.getTitle(), 64))
  												
@@ -383,9 +383,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assig
  										</h4>
 Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
---- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(working copy)
+diff --git a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm
+--- a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(revision 325613)
++++ b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm	(working copy)
 @@ -153,9 +153,9 @@
  							$tlang.getString("review.report")
  						</th>
@@ -400,9 +400,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assig
  								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
 Index: assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
 ===================================================================
-diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
---- a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(revision 325613)
-+++ b/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(working copy)
+diff --git a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm
+--- a/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(revision 325613)
++++ b/assignment/assignment-tool/tool/src/webapp/vm/assignment/chef_assignments_student_view_submission.vm	(working copy)
 @@ -681,7 +681,7 @@
  						#end
  					</h3>	
@@ -414,9 +414,9 @@ diff --git a/assignment/tags/sakai-10.6/assignment-tool/tool/src/webapp/vm/assig
  					#set ($props = false)
 Index: content-review/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java
 ===================================================================
-diff --git a/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java b/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java
---- a/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java	(revision 325613)
-+++ b/content-review/tags/sakai-10.6/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java	(working copy)
+diff --git a/content-review/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java b/content-review/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java
+--- a/content-review/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java	(revision 325613)
++++ b/content-review/content-review-api/model/src/java/org/sakaiproject/contentreview/model/ContentReviewItem.java	(working copy)
 @@ -71,6 +71,7 @@
  	private String lastError;
  	private String iconUrl;
@@ -427,9 +427,9 @@ diff --git a/content-review/tags/sakai-10.6/content-review-api/model/src/java/or
  	 */
 Index: content-review/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java
 ===================================================================
-diff --git a/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java b/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java
---- a/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java	(revision 325613)
-+++ b/content-review/tags/sakai-10.6/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java	(working copy)
+diff --git a/content-review/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java b/content-review/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java
+--- a/content-review/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java	(revision 325613)
++++ b/content-review/content-review-api/public/src/java/org/sakaiproject/contentreview/service/ContentReviewService.java	(working copy)
 @@ -77,6 +77,27 @@
  	throws QueueException, ReportException;
  	
